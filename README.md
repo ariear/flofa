@@ -1,4 +1,7 @@
-<p align="center"><a href="https://www.python.org" target="_blank"><img src="https://www.python.org/static/community_logos/python-logo-master-v3-TM.png" width="400" alt="Python Logo"></a></p>
+<p align="center">
+  <h1 align="center">🌿 FLOFA 🌿</h1>
+  <p align="center"><i>Flora & Fauna Exploration Game</i></p>
+</p>
 
 <p align="center">
 <a href="https://www.pygame.org"><img src="https://img.shields.io/badge/Pygame-2.0+-green.svg" alt="Pygame Version"></a>
