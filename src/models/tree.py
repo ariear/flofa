@@ -11,7 +11,7 @@ class Tree:
         self.highlight = False
 
         path = os.path.join("assets", "Plants", f"{tree_type}.png")
-        self.sprite = load_image_safe(path, scale=0.2) 
+        self.sprite = load_image_safe(path, scale=5) 
         self.rect = self.sprite.get_rect(midbottom=(x, y))
     
     def draw(self, surface, camera):

@@ -37,7 +37,7 @@ def main():
     CY = MAP_HEIGHT // 2
 
     trees = [
-        Tree(CX - 800, CY - 500, "beringin", "Pohon Beringin", "Pohon besar yang mempunyai akar di atas dan mirip rambut."),
+        Tree(CX - 800, CY - 500, "beringin", "Pohon Beringin", "Beringin adalah pohon besar yang tumbuh di daerah tropis. Pohon ini memiliki ciri khas berupa akar gantung yang banyak dan menjuntai seperti rambut. Beringin berasal dan banyak ditemukan di wilayah Asia Tenggara, termasuk Indonesia."),
         Tree(CX + 800, CY - 500, "oak", "Pohon Oak", "Pohon besar dan kokoh."),
         Tree(CX - 800, CY + 500, "maple", "Pohon Maple", "Terkenal dengan sirupnya."),
         Tree(CX + 800, CY + 500, "pine", "Pohon Cemara", "Pohon hijau abadi."),
