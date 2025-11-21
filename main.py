@@ -15,6 +15,15 @@ def main():
     """Main game function"""
     pygame.init()
     
+    # audio disini : adit
+    pygame.mixer.init() 
+    
+    # load musiknya
+    pygame.mixer.music.load("assets\\audio\\Searching for a Body.mp3")
+    
+    # jalanin musik dengan infinite loop
+    pygame.mixer.music.play(-1)
+    
     # Setup display BEFORE loading any assets
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Exploration Game")
