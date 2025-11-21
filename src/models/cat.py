@@ -132,8 +132,10 @@ class Cat:
             dist = math.sqrt(dx**2 + dy**2)
             
             if dist > self.speed: 
-                self.rect.x += (dx / dist) * self.speed
-                self.rect.y += (dy / dist) * self.speed
+                move_x = (dx / dist) * self.speed
+                move_y = (dy / dist) * self.speed
+                self.rect.centerx += int(move_x)
+                self.rect.centery += int(move_y)
                 if dx < 0: self.facing_right = False
                 elif dx > 0: self.facing_right = True
             else: 
