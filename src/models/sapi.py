@@ -11,49 +11,57 @@ class Sapi:
         self.type = "animal"
         self.highlight = False
 
-        # Load Sapi Spritesheet
         self.all_frames = []
         full_path = get_asset_path("assets", "animals_move", "sapi.png")
-        
+
         try:
             sprite_sheet = pygame.image.load(full_path).convert_alpha()
             sheet_w, sheet_h = sprite_sheet.get_size()
-            
-            cols = 8
-            rows = 4
+
+            cols = 6
+            rows = 8
             frame_w = sheet_w // cols
             frame_h = sheet_h // rows
-            
-            SCALE_FACTOR = 0.5
+
+            SCALE_FACTOR = 1.9
             target_w = int(frame_w * SCALE_FACTOR)
             target_h = int(frame_h * SCALE_FACTOR)
-            
+
+            frames_per_row = [6, 6, 6, 6, 4, 4, 4, 4]
+
+            self.row_frames = [] 
+
             for row in range(rows):
-                for col in range(cols):
+                row_list = []
+                limit = frames_per_row[row]
+
+                for col in range(limit):
                     rect = pygame.Rect(col * frame_w, row * frame_h, frame_w, frame_h)
-                    image_big = sprite_sheet.subsurface(rect)
-                    image_small = pygame.transform.scale(image_big, (target_w, target_h))
-                    self.all_frames.append(image_small)
-                    
+                    raw = sprite_sheet.subsurface(rect)
+                    scaled = pygame.transform.scale(raw, (target_w, target_h))
+                    row_list.append(scaled)
+
+                self.row_frames.append(row_list)
+
         except Exception as e:
             print(f"[ERROR] Gagal load sapi: {e}")
             dummy = pygame.Surface((50, 50))
             dummy.fill((139, 69, 19))
-            self.all_frames = [dummy] * 32
+            self.row_frames = [[dummy] * 4] * 8
 
-        def get_frames(start, count):
-            safe_count = min(count, len(self.all_frames) - start)
-            if safe_count <= 0: return [self.all_frames[0]]
-            return self.all_frames[start : start + safe_count]
+        self.idle_front  = self.row_frames[0]
+        self.idle_back   = self.row_frames[1]
+        self.idle_left   = self.row_frames[2]
+        self.idle_right  = self.row_frames[3]
 
-        self.idle_frames = get_frames(0, 8)
-        self.walk_frames = get_frames(8, 8)
-        self.run_frames = get_frames(16, 8)
-        self.sleep_frames = get_frames(24, 4)
+        self.walk_down   = self.row_frames[4]
+        self.walk_up     = self.row_frames[5]
+        self.walk_left   = self.row_frames[6]
+        self.walk_right  = self.row_frames[7]
 
-        self.current_animation = self.idle_frames
+        self.current_animation = self.idle_front
         self.frame_index = 0
-        self.animation_speed = 0.1  # Sapi bergerak lebih lambat
+        self.animation_speed = 0.1 
         
         if self.current_animation:
             self.image = self.current_animation[0]
@@ -62,7 +70,7 @@ class Sapi:
             
         self.rect = self.image.get_rect(center=(x, y))
         
-        self.speed = random.uniform(0.3, 0.8)  # Sapi bergerak lambat
+        self.speed = random.uniform(0.3, 0.8) 
         self.state = "idle"
         self.move_timer = 0
         self.move_duration = 0
@@ -95,7 +103,7 @@ class Sapi:
         if self.move_timer <= 0:
             rand_val = random.random()
             if self.state == "idle":
-                if rand_val < 0.4:  # Sapi jarang bergerak
+                if rand_val < 0.4:
                     self.state = "walking"
                     self.move_duration = random.randint(60, 150)
                     self.speed = random.uniform(0.3, 0.8)
@@ -114,30 +122,44 @@ class Sapi:
                     random.randint(max(0, self.rect.centerx - 120), min(MAP_WIDTH, self.rect.centerx + 120)),
                     random.randint(max(0, self.rect.centery - 120), min(MAP_HEIGHT, self.rect.centery + 120))
                 )
-            
+
             self.move_timer = self.move_duration
 
         if self.state == "walking":
-            self.set_animation(self.walk_frames, animation_speed=0.12)
-            
             dx = self.target_pos[0] - self.rect.centerx
             dy = self.target_pos[1] - self.rect.centery
             dist = math.sqrt(dx**2 + dy**2)
-            
+
+            if abs(dx) > abs(dy):
+                if dx > 0:
+                    self.set_animation(self.walk_right, animation_speed=0.12)
+                    self.facing_right = True
+                else:
+                    self.set_animation(self.walk_left, animation_speed=0.12)
+                    self.facing_right = False
+            else:
+                if dy > 0:
+                    self.set_animation(self.walk_down, animation_speed=0.12)
+                else:
+                    self.set_animation(self.walk_up, animation_speed=0.12)
+
             if dist > self.speed:
                 self.rect.x += (dx / dist) * self.speed
                 self.rect.y += (dy / dist) * self.speed
-                if dx < 0: self.facing_right = False
-                elif dx > 0: self.facing_right = True
             else:
                 self.state = "idle"
+
             self.rect.clamp_ip(MAP_RECT)
 
         elif self.state == "idle":
-            self.set_animation(self.idle_frames)
-            
+            if abs(self.target_pos[0] - self.rect.centerx) > abs(self.target_pos[1] - self.rect.centery):
+                self.set_animation(self.idle_right if self.facing_right else self.idle_left)
+            else:
+                self.set_animation(self.idle_front)
+
         elif self.state == "sleeping":
-            self.set_animation(self.sleep_frames, animation_speed=0.05)
+            self.set_animation(self.walk_down[:1], animation_speed=0.02)
+
 
     def update(self):
         self.update_movement()
