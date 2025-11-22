@@ -1,199 +1,140 @@
 import cairo
 
-# Define canvas dimensions (from cell ea5627f2)
 WIDTH = 600
 HEIGHT = 800
-
-# Create a Pycairo image surface (from cell ea5627f2)
 surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, WIDTH, HEIGHT)
 
-# Create a cairo context (from cell ea5627f2)
 context = cairo.Context(surface)
 
-# --- Tree Trunk Drawing (from cell 0aa80f52) ---
+# --- Gambar Batang Pohon ---
 
-# Define trunk colors
-dark_brown = (88/255, 60/255, 34/255)
-medium_brown = (120/255, 80/255, 45/255)
-light_brown = (150/255, 100/255, 60/255)
+# Definisikan 3 warna coklat buat batang pohon
+# Angka dibagi 255 karena Cairo pakai skala 0-1, bukan 0-255
+dark_brown = (88/255, 60/255, 34/255)      # Coklat gelap buat bayangan
+medium_brown = (120/255, 80/255, 45/255)   # Coklat sedang buat warna utama
+light_brown = (150/255, 100/255, 60/255)   # Coklat terang buat highlight
 
+# Simpan status konteks sekarang (biar bisa di-restore nanti)
+# Kayak save game sebelum kita mulai gambar
 context.save()
 
-context.set_source_rgb(*medium_brown)
-context.move_to(WIDTH * 0.45, HEIGHT * 0.9)
+# BAGIAN 1: Gambar batang utama dengan warna coklat sedang
+context.set_source_rgb(*medium_brown)  # Set warna kuas ke coklat sedang
+context.move_to(WIDTH * 0.45, HEIGHT * 0.9)  # Mulai dari kiri bawah batang
+# Buat kurva pertama: dari bawah ke tengah atas batang
 context.curve_to(WIDTH * 0.4, HEIGHT * 0.7, WIDTH * 0.48, HEIGHT * 0.5, WIDTH * 0.5, HEIGHT * 0.45)
+# Buat kurva kedua: dari tengah atas ke kanan bawah batang
 context.curve_to(WIDTH * 0.52, HEIGHT * 0.5, WIDTH * 0.6, HEIGHT * 0.7, WIDTH * 0.55, HEIGHT * 0.9)
-context.close_path()
-context.fill()
+context.close_path()  # Tutup bentuk (kembali ke titik awal)
+context.fill()  # Isi bentuk dengan warna
 
-context.set_source_rgb(*dark_brown)
-context.move_to(WIDTH * 0.5, HEIGHT * 0.45)
+# BAGIAN 2: Gambar bayangan gelap di sisi kanan batang
+context.set_source_rgb(*dark_brown)  # Set warna kuas ke coklat gelap
+context.move_to(WIDTH * 0.5, HEIGHT * 0.45)  # Mulai dari tengah atas
+# Buat garis kurva mengikuti sisi kanan batang
 context.curve_to(WIDTH * 0.52, HEIGHT * 0.5, WIDTH * 0.6, HEIGHT * 0.7, WIDTH * 0.55, HEIGHT * 0.9)
-context.line_to(WIDTH * 0.49, HEIGHT * 0.9)
+context.line_to(WIDTH * 0.49, HEIGHT * 0.9)  # Tarik garis lurus ke kiri
+# Buat kurva balik ke atas untuk menutup bentuk bayangan
 context.curve_to(WIDTH * 0.58, HEIGHT * 0.7, WIDTH * 0.5, HEIGHT * 0.5, WIDTH * 0.49, HEIGHT * 0.46)
-context.close_path()
-context.fill()
+context.close_path()  # Tutup bentuk bayangan
+context.fill()  # Isi dengan warna coklat gelap
 
-context.set_source_rgb(*light_brown)
-context.move_to(WIDTH * 0.45, HEIGHT * 0.9)
+# BAGIAN 3: Gambar highlight terang di sisi kiri batang
+context.set_source_rgb(*light_brown)  # Set warna kuas ke coklat terang
+context.move_to(WIDTH * 0.45, HEIGHT * 0.9)  # Mulai dari kiri bawah
+# Buat kurva mengikuti sisi kiri batang (bagian yang kena cahaya)
 context.curve_to(WIDTH * 0.42, HEIGHT * 0.8, WIDTH * 0.45, HEIGHT * 0.6, WIDTH * 0.48, HEIGHT * 0.48)
-context.line_to(WIDTH * 0.49, HEIGHT * 0.5)
+context.line_to(WIDTH * 0.49, HEIGHT * 0.5)  # Tarik garis ke tengah
+# Buat kurva balik ke bawah untuk menutup bentuk highlight
 context.curve_to(WIDTH * 0.47, HEIGHT * 0.6, WIDTH * 0.44, HEIGHT * 0.8, WIDTH * 0.47, HEIGHT * 0.9)
-context.close_path()
-context.fill()
+context.close_path()  # Tutup bentuk highlight
+context.fill()  # Isi dengan warna coklat terang
 
+# Kembalikan status konteks ke kondisi awal (sebelum save)
 context.restore()
 
-# --- Tree Trunk Details (from cell c1c99fcb) ---
+# --- Detail-detail Batang Pohon ---
 
-dark_brown_detail = (70/255, 48/255, 20/255)
-light_brown_detail = (170/255, 115/255, 75/255)
+# Warna coklat khusus buat detail tekstur kayu
+dark_brown_detail = (70/255, 48/255, 20/255)    # Coklat gelap buat retakan kayu
+light_brown_detail = (170/255, 115/255, 75/255)  # Coklat terang buat serat kayu
 
+# Simpan status konteks lagi sebelum gambar detail
 context.save()
 
-context.set_source_rgb(*dark_brown_detail)
-context.set_line_width(2)
+# --- Gambar Detail Gelap (Retakan Kayu) ---
+context.set_source_rgb(*dark_brown_detail)  # Set warna ke coklat gelap detail
+context.set_line_width(2)  # Set ketebalan garis = 2 pixel
 
-context.move_to(WIDTH * 0.51, HEIGHT * 0.55)
-context.line_to(WIDTH * 0.53, HEIGHT * 0.65)
-context.line_to(WIDTH * 0.52, HEIGHT * 0.75)
-context.stroke()
+# Retakan kayu pertama: garis zig-zag di kanan batang
+context.move_to(WIDTH * 0.51, HEIGHT * 0.55)  # Titik awal retakan
+context.line_to(WIDTH * 0.53, HEIGHT * 0.65)  # Garis ke bawah-kanan
+context.line_to(WIDTH * 0.52, HEIGHT * 0.75)  # Garis lanjut ke bawah
+context.stroke()  # Gambar garisnya
 
-context.move_to(WIDTH * 0.47, HEIGHT * 0.6)
-context.line_to(WIDTH * 0.46, HEIGHT * 0.7)
-context.stroke()
+# Retakan kayu kedua: garis lurus di kiri batang
+context.move_to(WIDTH * 0.47, HEIGHT * 0.6)  # Titik awal
+context.line_to(WIDTH * 0.46, HEIGHT * 0.7)  # Garis ke bawah
+context.stroke()  # Gambar garisnya
 
-context.set_source_rgb(*light_brown_detail)
-context.set_line_width(1.5)
+# --- Gambar Detail Terang (Serat Kayu) ---
+context.set_source_rgb(*light_brown_detail)  # Set warna ke coklat terang detail
+context.set_line_width(1.5)  # Set ketebalan garis = 1.5 pixel (lebih tipis)
 
-context.move_to(WIDTH * 0.48, HEIGHT * 0.5)
-context.line_to(WIDTH * 0.46, HEIGHT * 0.6)
-context.stroke()
+# Serat kayu pertama: diagonal di bagian atas kiri
+context.move_to(WIDTH * 0.48, HEIGHT * 0.5)  # Titik awal
+context.line_to(WIDTH * 0.46, HEIGHT * 0.6)  # Garis miring ke bawah-kiri
+context.stroke()  # Gambar garisnya
 
-context.move_to(WIDTH * 0.50, HEIGHT * 0.68)
-context.line_to(WIDTH * 0.49, HEIGHT * 0.78)
-context.stroke()
+# Serat kayu kedua: vertikal di bagian tengah
+context.move_to(WIDTH * 0.50, HEIGHT * 0.68)  # Titik awal
+context.line_to(WIDTH * 0.49, HEIGHT * 0.78)  # Garis ke bawah
+context.stroke()  # Gambar garisnya
 
-context.set_source_rgb(*light_brown)
-context.move_to(WIDTH * 0.49, HEIGHT * 0.45)
+# --- Gambar Garis Lengkung Halus di Ujung Atas Batang ---
+context.set_source_rgb(*light_brown)  # Set warna ke coklat terang
+context.move_to(WIDTH * 0.49, HEIGHT * 0.45)  # Mulai dari kiri atas batang
+# Buat kurva halus kecil yang melengkung ke kanan
 context.curve_to(WIDTH * 0.495, HEIGHT * 0.448, WIDTH * 0.505, HEIGHT * 0.448, WIDTH * 0.51, HEIGHT * 0.45)
-context.set_line_width(1)
-context.stroke()
+context.set_line_width(1)  # Set ketebalan garis = 1 pixel (tipis)
+context.stroke()  # Gambar garis kurva (bukan isi)
 
+# Kembalikan status konteks ke kondisi sebelum gambar detail
 context.restore()
 
-# --- Foliage Drawing (from cell 892fb895) ---
+# --- Gambar Daun-daun Pohon ---
 
-dark_green = (30/255, 70/255, 20/255)
-medium_green = (70/255, 120/255, 40/255)
-light_green = (120/255, 180/255, 70/255)
+# Definisikan 3 warna hijau buat daun pohon
+# Bikin variasi warna hijau biar daun keliatan lebih natural
+dark_green = (30/255, 70/255, 20/255)      # Hijau gelap buat bayangan daun
+medium_green = (70/255, 120/255, 40/255)   # Hijau sedang buat daun utama
+light_green = (120/255, 180/255, 70/255)   # Hijau terang buat highlight daun
 
+# Simpan status konteks sebelum mulai gambar daun
 context.save()
 
-context.set_source_rgb(*medium_green)
-context.move_to(WIDTH * 0.3, HEIGHT * 0.35)
+# --- DAUN #1: Daun besar di kiri atas ---
+context.set_source_rgb(*medium_green)  # Set warna ke hijau sedang
+context.move_to(WIDTH * 0.3, HEIGHT * 0.35)  # Mulai dari kiri tengah daun
+# Kurva pertama: naik ke atas membentuk setengah lingkaran kiri-atas
 context.curve_to(WIDTH * 0.2, HEIGHT * 0.2, WIDTH * 0.4, HEIGHT * 0.15, WIDTH * 0.5, HEIGHT * 0.2)
+# Kurva kedua: turun ke bawah membentuk setengah lingkaran kanan-bawah
 context.curve_to(WIDTH * 0.6, HEIGHT * 0.25, WIDTH * 0.45, HEIGHT * 0.4, WIDTH * 0.3, HEIGHT * 0.35)
-context.fill()
+context.fill()  # Isi bentuk daun dengan warna hijau
 
-context.set_source_rgb(*medium_green)
-context.move_to(WIDTH * 0.5, HEIGHT * 0.2)
+# --- DAUN #2: Daun besar di kanan atas ---
+context.set_source_rgb(*medium_green)  # Set warna ke hijau sedang
+context.move_to(WIDTH * 0.5, HEIGHT * 0.2)  # Mulai dari tengah atas
+# Kurva pertama: melengkung ke kanan atas lalu turun ke kanan
 context.curve_to(WIDTH * 0.6, HEIGHT * 0.15, WIDTH * 0.8, HEIGHT * 0.25, WIDTH * 0.7, HEIGHT * 0.4)
+# Kurva kedua: balik ke kiri membentuk bagian bawah daun
 context.curve_to(WIDTH * 0.6, HEIGHT * 0.45, WIDTH * 0.55, HEIGHT * 0.3, WIDTH * 0.5, HEIGHT * 0.2)
-context.fill()
+context.fill()  # Isi bentuk daun dengan warna hijau
 
-context.set_source_rgb(*medium_green)
-context.move_to(WIDTH * 0.25, HEIGHT * 0.45)
+# --- DAUN #3: Daun sedang di kiri tengah ---
+context.set_source_rgb(*medium_green)  # Set warna ke hijau sedang
+context.move_to(WIDTH * 0.25, HEIGHT * 0.45)  # Mulai dari kiri bawah daun
+# Kurva pertama: naik membentuk bagian atas daun
 context.curve_to(WIDTH * 0.15, HEIGHT * 0.35, WIDTH * 0.35, HEIGHT * 0.3, WIDTH * 0.45, HEIGHT * 0.4)
-context.curve_to(WIDTH * 0.4, HEIGHT * 0.5, WIDTH * 0.3, HEIGHT * 0.5, WIDTH * 0.25, HEIGHT * 0.45)
-context.fill()
-
-context.set_source_rgb(*medium_green)
-context.move_to(WIDTH * 0.75, HEIGHT * 0.45)
-context.curve_to(WIDTH * 0.85, HEIGHT * 0.35, WIDTH * 0.65, HEIGHT * 0.3, WIDTH * 0.55, HEIGHT * 0.4)
-context.curve_to(WIDTH * 0.6, HEIGHT * 0.5, WIDTH * 0.7, HEIGHT * 0.5, WIDTH * 0.75, HEIGHT * 0.45)
-context.fill()
-
-context.set_source_rgb(*dark_green)
-
-context.move_to(WIDTH * 0.4, HEIGHT * 0.3)
-context.curve_to(WIDTH * 0.45, HEIGHT * 0.35, WIDTH * 0.3, HEIGHT * 0.4, WIDTH * 0.28, HEIGHT * 0.38)
-context.curve_to(WIDTH * 0.35, HEIGHT * 0.32, WIDTH * 0.4, HEIGHT * 0.3, WIDTH * 0.4, HEIGHT * 0.3)
-context.fill()
-
-context.move_to(WIDTH * 0.6, HEIGHT * 0.3)
-context.curve_to(WIDTH * 0.65, HEIGHT * 0.35, WIDTH * 0.7, HEIGHT * 0.4, WIDTH * 0.68, HEIGHT * 0.38)
-context.curve_to(WIDTH * 0.65, HEIGHT * 0.32, WIDTH * 0.6, HEIGHT * 0.3, WIDTH * 0.6, HEIGHT * 0.3)
-context.fill()
-
-context.move_to(WIDTH * 0.45, HEIGHT * 0.4)
-context.curve_to(WIDTH * 0.5, HEIGHT * 0.35, WIDTH * 0.55, HEIGHT * 0.4, WIDTH * 0.5, HEIGHT * 0.45)
-context.close_path()
-context.fill()
-
-context.move_to(WIDTH * 0.7, HEIGHT * 0.4)
-context.curve_to(WIDTH * 0.75, HEIGHT * 0.45, WIDTH * 0.65, HEIGHT * 0.5, WIDTH * 0.6, HEIGHT * 0.45)
-context.close_path()
-context.fill()
-
-context.set_source_rgb(*light_green)
-
-context.move_to(WIDTH * 0.35, HEIGHT * 0.25)
-context.curve_to(WIDTH * 0.28, HEIGHT * 0.2, WIDTH * 0.38, HEIGHT * 0.18, WIDTH * 0.42, HEIGHT * 0.22)
-context.curve_to(WIDTH * 0.38, HEIGHT * 0.26, WIDTH * 0.35, HEIGHT * 0.25, WIDTH * 0.35, HEIGHT * 0.25)
-context.fill()
-
-context.move_to(WIDTH * 0.55, HEIGHT * 0.25)
-context.curve_to(WIDTH * 0.5, HEIGHT * 0.2, WIDTH * 0.6, HEIGHT * 0.18, WIDTH * 0.65, HEIGHT * 0.22)
-context.curve_to(WIDTH * 0.6, HEIGHT * 0.26, WIDTH * 0.55, HEIGHT * 0.25, WIDTH * 0.55, HEIGHT * 0.25)
-context.fill()
-
-context.move_to(WIDTH * 0.3, HEIGHT * 0.4)
-context.curve_to(WIDTH * 0.25, HEIGHT * 0.35, WIDTH * 0.35, HEIGHT * 0.33, WIDTH * 0.38, HEIGHT * 0.38)
-context.curve_to(WIDTH * 0.35, HEIGHT * 0.41, WIDTH * 0.3, HEIGHT * 0.4, WIDTH * 0.3, HEIGHT * 0.4)
-context.fill()
-
-context.restore()
-
-# --- Foliage Details (from cell f431fc20) ---
-
-darker_green_detail = (20/255, 60/255, 15/255)
-brighter_green_detail = (140/255, 200/255, 90/255)
-
-context.save()
-
-context.set_source_rgb(*darker_green_detail)
-
-context.move_to(WIDTH * 0.48, HEIGHT * 0.25)
-context.curve_to(WIDTH * 0.5, HEIGHT * 0.3, WIDTH * 0.52, HEIGHT * 0.25, WIDTH * 0.5, HEIGHT * 0.2)
-context.close_path()
-context.fill()
-
-context.move_to(WIDTH * 0.65, HEIGHT * 0.45)
-context.curve_to(WIDTH * 0.7, HEIGHT * 0.48, WIDTH * 0.75, HEIGHT * 0.4, WIDTH * 0.7, HEIGHT * 0.35)
-context.curve_to(WIDTH * 0.68, HEIGHT * 0.43, WIDTH * 0.65, HEIGHT * 0.45, WIDTH * 0.65, HEIGHT * 0.45)
-context.fill()
-
-context.set_source_rgb(*brighter_green_detail)
-
-context.move_to(WIDTH * 0.33, HEIGHT * 0.22)
-context.curve_to(WIDTH * 0.28, HEIGHT * 0.18, WIDTH * 0.35, HEIGHT * 0.15, WIDTH * 0.4, HEIGHT * 0.18)
-context.curve_to(WIDTH * 0.37, HEIGHT * 0.21, WIDTH * 0.33, HEIGHT * 0.22, WIDTH * 0.33, HEIGHT * 0.22)
-context.fill()
-
-context.move_to(WIDTH * 0.58, HEIGHT * 0.18)
-context.curve_to(WIDTH * 0.53, HEIGHT * 0.15, WIDTH * 0.65, HEIGHT * 0.15, WIDTH * 0.7, HEIGHT * 0.22)
-context.curve_to(WIDTH * 0.65, HEIGHT * 0.2, WIDTH * 0.58, HEIGHT * 0.18, WIDTH * 0.58, HEIGHT * 0.18)
-context.fill()
-
-context.move_to(WIDTH * 0.28, HEIGHT * 0.42)
-context.curve_to(WIDTH * 0.2, HEIGHT * 0.38, WIDTH * 0.3, HEIGHT * 0.35, WIDTH * 0.35, HEIGHT * 0.38)
-context.curve_to(WIDTH * 0.32, HEIGHT * 0.41, WIDTH * 0.28, HEIGHT * 0.42, WIDTH * 0.28, HEIGHT * 0.42)
-context.fill()
-
-context.restore()
-
-# --- Save Image (original code) ---
-output_filename = "clash_of_clans_tree.png"
-surface.write_to_png(output_filename)
-print(f"Image saved successfully as {output_filename}")
+# Kurva kedua: turun membentuk bagian bawah daun
+context.curve_to(WIDTH * 0.4, HEIGHT * 0.5, WIDTH * 0.3, HEIGHT * 0.5, WIDTH * 0.25, HEIGHT *
