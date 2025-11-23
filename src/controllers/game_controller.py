@@ -4,12 +4,19 @@ from src.utils.helpers import calculate_distance
 from src.views.info_popup import InfoPopup
 
 class GameController:
+<<<<<<< HEAD
     def __init__(self, player, trees, animals, cats, turkeys , grass_clumps):
+=======
+    def __init__(self, player, trees, animals, cats, grass_clumps):
+>>>>>>> main
         self.player = player
         self.trees = trees
         self.animals = animals
         self.cats = cats
+<<<<<<< HEAD
         self.turkeys = turkeys
+=======
+>>>>>>> main
         self.grass_clumps = grass_clumps
         self.camera = pygame.Rect(0, 0, 0, 0)  # Will be set in update_camera
         self.popup = None
@@ -38,11 +45,19 @@ class GameController:
         min_dist = float('inf')
         
         # Reset highlight
+<<<<<<< HEAD
         for obj in self.trees + self.animals + self.cats + self.turkeys:
             obj.highlight = False
         
         # Cari objek terdekat
         for obj in self.trees + self.animals + self.cats + self.turkeys: 
+=======
+        for obj in self.trees + self.animals + self.cats:
+            obj.highlight = False
+        
+        # Cari objek terdekat
+        for obj in self.trees + self.animals + self.cats: 
+>>>>>>> main    
             dist = calculate_distance(self.player.rect, obj.rect)
             if dist < INTERACTION_DISTANCE and dist < min_dist:
                 min_dist = dist
@@ -52,6 +67,7 @@ class GameController:
             self.can_interact_with.highlight = True
     
     def update_cats(self, popup_active):
+<<<<<<< HEAD
         """Update animasi kucing"""
         if not popup_active: 
             for cat_obj in self.cats:
@@ -63,6 +79,14 @@ class GameController:
         if not popup_active:
             for turkey in self.turkeys:
                 turkey.update() # <--- INI PERINTAH "JALAN!" NYA
+=======
+        """Update animasi kucing dan hewan"""
+        if not popup_active: 
+            for cat_obj in self.cats:
+                cat_obj.update()
+            for animal_obj in self.animals:
+                animal_obj.update()
+>>>>>>> main
     
     def handle_event(self, event):
         """Handle event pygame"""

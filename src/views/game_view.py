@@ -9,7 +9,11 @@ class GameView:
         self.font_pixel = pygame.font.Font(None, 28)
         self.screen = screen
     
+<<<<<<< HEAD
     def render(self, player, trees, animals, cats, turkeys ,grass_clumps, camera, time_sec, popup, can_interact_with):
+=======
+    def render(self, player, trees, animals, cats, grass_clumps, camera, time_sec, popup, can_interact_with):
+>>>>>>> main
         """Render semua elemen game"""
         self.screen.fill(GREEN_BG)
         
@@ -19,9 +23,13 @@ class GameView:
         for t in trees: drawables.append(("sprite", t.rect.bottom, t))
         for a in animals: drawables.append(("sprite", a.rect.bottom, a))
         for c in cats: drawables.append(("sprite", c.rect.bottom, c))
+<<<<<<< HEAD
         for tky in turkeys: drawables.append(("sprite", tky.rect.bottom, tky))
         for g in grass_clumps: drawables.append(("grass", g["y"], g))
 
+=======
+        for g in grass_clumps: drawables.append(("grass", g["y"], g))
+>>>>>>> main
         
         drawables.sort(key=lambda item: item[1])
         
@@ -40,7 +48,11 @@ class GameView:
             self.screen.blit(prompt_text, (px + 5, py + 3))
 
         # Minimap
+<<<<<<< HEAD
         self._draw_minimap(player, trees, animals, cats, turkeys, camera)
+=======
+        self._draw_minimap(player, trees, animals, cats, camera)
+>>>>>>> main
         
         # Popup
         if popup: popup.draw(self.screen)
@@ -52,7 +64,11 @@ class GameView:
 
         pygame.display.flip()
     
+<<<<<<< HEAD
     def _draw_minimap(self, player, trees, animals, cats, turkeys, camera):
+=======
+    def _draw_minimap(self, player, trees, animals, cats, camera):
+>>>>>>> main
         """Menggambar minimap"""
         SCALE = 0.08
         MW, MH = int(MAP_WIDTH * SCALE), int(MAP_HEIGHT * SCALE)
@@ -61,6 +77,9 @@ class GameView:
         for t in trees: pygame.draw.circle(minimap, (0, 255, 0), (int(t.rect.centerx*SCALE), int(t.rect.centery*SCALE)), 3)
         for a in animals: pygame.draw.circle(minimap, (255, 200, 0), (int(a.rect.centerx*SCALE), int(a.rect.centery*SCALE)), 3)
         for c in cats: pygame.draw.circle(minimap, (255, 150, 0), (int(c.rect.centerx*SCALE), int(c.rect.centery*SCALE)), 3)
+<<<<<<< HEAD
         for tky in turkeys: pygame.draw.circle(minimap, (255, 0, 0), (int(tky.rect.centerx*SCALE), int(tky.rect.centery*SCALE)), 3)
+=======
+>>>>>>> main
         pygame.draw.circle(minimap, (255, 0, 0), (int(player.rect.centerx*SCALE), int(player.rect.centery*SCALE)), 4)
         self.screen.blit(minimap, (SCREEN_WIDTH - MW - 10, 10))
