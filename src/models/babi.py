@@ -19,20 +19,20 @@ class Babi:
             sprite_sheet = pygame.image.load(full_path).convert_alpha()
             sheet_w, sheet_h = sprite_sheet.get_size()
             
-            # --- PERBAIKAN 1: Grid Sesuai Gambar (6 Kolom, 8 Baris) ---
+            #Grid Sesuai Gambar (6 Kolom, 8 Baris) ---
             cols = 6 
             rows = 8 
             
             frame_w = sheet_w // cols
             frame_h = sheet_h // rows
             
-            # --- PERBAIKAN 2: Skala Diperbesar (Biar gak kecil banget) ---
+     
             SCALE_FACTOR = 2.8 
             
             target_w = int(frame_w * SCALE_FACTOR)
             target_h = int(frame_h * SCALE_FACTOR)
             
-            # Potong-potong gambar
+
             for row in range(rows):
                 for col in range(cols):
                     rect = pygame.Rect(col * frame_w, row * frame_h, frame_w, frame_h)
@@ -46,30 +46,29 @@ class Babi:
             dummy.fill((200, 200, 200))
             self.all_frames = [dummy] * 48
 
-        # --- Helper buat ambil frame ---
+
         def get_frames(start_index, count):
-            # Ambil potongan frame dari list besar
+           
             return self.all_frames[start_index : start_index + count]
 
-        # --- MAPPING ANIMASI (Sesuai gambar domba.png) ---
-        # Baris 3 (index 12) = Jalan ke Kanan (6 frame)
+      
         self.walk_frames = get_frames(12, 6)
         
-        # Baris 5 (index 24) = Diam/Idle (4 frame yang ada gambarnya)
+       
         self.idle_frames = get_frames(24, 4)
         
-        # Baris 7 (index 36) = Tidur (4 frame)
+        
         self.sleep_frames = get_frames(36, 4)
 
-        # Set awal
+      
         self.current_animation = self.idle_frames
         self.frame_index = 0
-        self.animation_speed = 0.12  # Kecepatan animasi
+        self.animation_speed = 0.12 
         
         self.image = self.current_animation[0]
         self.rect = self.image.get_rect(center=(x, y))
 
-        # --- PERBAIKAN 3: Anti-Sliding (Pakai koordinat Float) ---
+        
         self.true_x = float(x)
         self.true_y = float(y)
         
@@ -81,25 +80,25 @@ class Babi:
         self.facing_right = True
 
     def set_animation(self, animation_frames, animation_speed=0.12):
-        # Ganti animasi hanya kalau beda dari yang sekarang
+      
         if self.current_animation != animation_frames:
             self.current_animation = animation_frames
             self.frame_index = 0
             self.animation_speed = animation_speed
-            # Reset rect biar gak loncat
+           
             self.rect = self.image.get_rect(center=self.rect.center)
 
     def update_animation(self):
         if not self.current_animation: return
 
-        # Jalankan frame
+        
         self.frame_index += self.animation_speed
         if self.frame_index >= len(self.current_animation):
             self.frame_index = 0
         
         idx = int(self.frame_index)
         
-        # Ambil gambar & Flip kalau hadap kiri
+      
         if idx < len(self.current_animation):
             frame_img = self.current_animation[idx]
             if not self.facing_right:
@@ -107,21 +106,20 @@ class Babi:
             else:
                 self.image = frame_img
             
-            # PENTING: Jaga titik tengah tetap stabil
+          
             self.rect = self.image.get_rect(center=(int(self.true_x), int(self.true_y)))
 
     def update_movement(self):
         self.move_timer -= 1
-        
-        # --- LOGIKA GANTI STATE (Jalan/Diam/Tidur) ---
+       
         if self.move_timer <= 0:
             rand = random.random()
             
             if self.state == "idle":
-                if rand < 0.6: # 60% peluang jalan
+                if rand < 0.6:
                     self.state = "walking"
                     self.move_duration = random.randint(100, 200)
-                    # Tentukan target random
+                
                     tx = random.randint(max(0, int(self.true_x) - 150), min(MAP_WIDTH, int(self.true_x) + 150))
                     ty = random.randint(max(0, int(self.true_y) - 150), min(MAP_HEIGHT, int(self.true_y) + 150))
                     self.target_pos = (tx, ty)
@@ -139,21 +137,21 @@ class Babi:
 
             self.move_timer = self.move_duration
 
-        # --- EKSEKUSI GERAKAN ---
+
         if self.state == "walking":
             self.set_animation(self.walk_frames, 0.15)
             
-            # Hitung jarak
+
             dx = self.target_pos[0] - self.true_x
             dy = self.target_pos[1] - self.true_y
             dist = math.sqrt(dx**2 + dy**2)
             
             if dist > self.speed:
-                # Gerak halus (float)
+
                 self.true_x += (dx / dist) * self.speed
                 self.true_y += (dy / dist) * self.speed
                 
-                # Update hadap kanan/kiri
+
                 if dx < 0: self.facing_right = False
                 elif dx > 0: self.facing_right = True
             else:
@@ -165,11 +163,11 @@ class Babi:
         elif self.state == "sleeping":
             self.set_animation(self.sleep_frames, 0.05)
 
-        # Kunci posisi dalam map
+        
         self.true_x = max(0, min(MAP_WIDTH, self.true_x))
         self.true_y = max(0, min(MAP_HEIGHT, self.true_y))
         
-        # Sinkronisasi akhir ke Rect
+        
         self.rect.centerx = int(self.true_x)
         self.rect.centery = int(self.true_y)
 
@@ -178,12 +176,9 @@ class Babi:
         self.update_animation()
 
     def draw(self, surface, camera):
-        # Gambar menyesuaikan kamera
         screen_rect = self.rect.move(-camera.x, -camera.y)
         
-        # Efek highlight (lingkaran kuning kalau dekat player)
         if self.highlight:
-            # Offset sedikit ke bawah biar lingkarannya pas di kaki
             circle_pos = (screen_rect.centerx, screen_rect.centery + 10) 
             pygame.draw.circle(surface, YELLOW, circle_pos, 30, 2)
             

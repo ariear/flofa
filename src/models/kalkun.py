@@ -5,15 +5,15 @@ from src.config import MAP_RECT, MAP_WIDTH, MAP_HEIGHT, YELLOW
 from src.utils.asset_loader import get_asset_path
 
 
-class Merak:
+class Kalkun:
     def __init__(self, x, y, name, desc):
         self.name = name
         self.description = desc
-        self.type = "turkey"
+        self.type = "animal"
         self.highlight = False
 
         # Load Spritesheet Kalkun
-        full_path = get_asset_path("assets", "animals_move", "merak.png")
+        full_path = get_asset_path("assets", "animals_move", "kalkun.png")
         self.idle_frames = []
         self.walk_frames = []
         self.run_frames = []
@@ -23,7 +23,7 @@ class Merak:
             sprite_sheet = pygame.image.load(full_path).convert_alpha()
             # Estimasi ukuran frame dari gambar (sekitar 32x32 pixel per frame)
             FRAME_W, FRAME_H = 32, 32
-            SCALE_FACTOR = 2.5 # Perbesar agar terlihat jelas
+            SCALE_FACTOR = 2.5 
 
             def load_specific_row(row_index, frame_count):
                 frames = []
@@ -46,7 +46,7 @@ class Merak:
             self.sleep_frames = load_specific_row(6, 4)
 
         except Exception as e:
-            print(f"[ERROR] Gagal load turkey: {e}")
+            print(f"[ERROR] Gagal load kalkun: {e}")
             dummy = pygame.Surface((50, 50))
             dummy.fill((200, 50, 50))
             self.idle_frames = [dummy]

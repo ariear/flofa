@@ -12,7 +12,7 @@ from src.models.ayam import Ayam
 from src.models.ayam_jantan import AyamJantan
 from src.models.kambing import Kambing
 from src.models.anjing import Anjing
-from src.models.merak import Merak
+from src.models.kalkun import Kalkun
 from src.models.cat import Cat
 from src.models.grass import create_grass_clump_sprite, spawn_all_grass_clumps
 from src.controllers.game_controller import GameController
@@ -83,7 +83,7 @@ def main():
     animals.append(Anjing(safe_x, safe_y, "Anjing", "Anjing adalah hewan peliharaan yang setia dan pintar. Dikenal sebagai sahabat terbaik manusia karena sifatnya yang loyal dan mudah dilatih. Anjing hidup di rumah atau peternakan sebagai penjaga."))
     
     safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
-    animals.append(Merak(safe_x, safe_y, "Merak", "Merak adalah burung eksotis dengan bulu ekor yang sangat indah dan berwarna-warni. Ciri khasnya adalah kemampuan membuka ekornya seperti kipas saat pamer. Merak hidup di hutan atau taman."))
+    animals.append(Kalkun(safe_x, safe_y, "Kalkun", "Kalkun adalah burung Dengan Kaki yang sangat panjang serta tubuh yang besar dan memiliki telur yang sangat besar. Kalkun sering dipelihara oleh orang luar negeri dengan kandang yang besar."))
 
 
     # Kucing
