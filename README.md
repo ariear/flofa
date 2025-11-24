@@ -70,16 +70,47 @@ flofa/
 ├── main.py                      # Entry point aplikasi
 ├── assets/                      # Asset game (sprites, images)
 │   ├── player.png              # Spritesheet player 8x4
-│   ├── animals/                # Sprite hewan
+│   ├── audio/                  # Audio game
+│   │   └── Searching for a Body.mp3
 │   ├── animals_move/           # Spritesheet animasi hewan
+│   │   ├── anak_sapi.png
+│   │   ├── anjing.png
+│   │   ├── ayam.png
+│   │   ├── ayam_jantan.png
+│   │   ├── babi.png
+│   │   ├── domba.png
+│   │   ├── kalkun.png
+│   │   ├── kambing.png
+│   │   ├── kucing.png
+│   │   └── sapi.png
 │   └── Plants/                 # Sprite pohon & tanaman
+│       ├── Beringin.png
+│       ├── alpukat.png
+│       ├── clash_of_clans_tree.png
+│       ├── mangga.png
+│       ├── maple.png
+│       ├── oak.png
+│       ├── pine.png
+│       ├── rambutan.png
+│       └── sakura.png
 └── src/
     ├── config.py               # Konfigurasi & konstanta
     ├── models/                 # Model Layer
     │   ├── player.py           # Player dengan animasi 4 arah
-    │   ├── animal.py           # Entity hewan
+    │   ├── animal.py           # Base class entity hewan
     │   ├── cat.py              # Kucing dengan AI state machine
+    │   ├── anak_sapi.py        # Entity anak sapi
+    │   ├── anjing.py           # Entity anjing
+    │   ├── ayam.py             # Entity ayam
+    │   ├── ayam_jantan.py      # Entity ayam jantan
+    │   ├── babi.py             # Entity babi
+    │   ├── domba.py            # Entity domba
+    │   ├── kalkun.py           # Entity kalkun
+    │   ├── kambing.py          # Entity kambing
+    │   ├── sapi.py             # Entity sapi
     │   ├── tree.py             # Entity pohon
+    │   ├── bound_tree.py       # Pohon boundary dengan collision
+    │   ├── boundary_tree.py    # Boundary tree dengan rendering PyCairo
     │   └── grass.py            # Generasi rumput procedural
     ├── views/                  # View Layer
     │   ├── game_view.py        # Rendering utama game
@@ -158,10 +189,10 @@ Project ini dilisensikan di bawah [MIT License](LICENSE).
 
 ## Kontak
 
-**Developer**: Arie Andrian Rahman  
-**Email**: your.email@example.com  
-**GitHub**: [@ariear](https://github.com/ariear)
+**Developer**: Adit, Egy, Arie
+
+**GitHub**: [@delissesu](https://github.com/delissesu), [@Kaveinz](https://github.com/Kaveinz), [@ariear](https://github.com/ariear),
 
 ---
 
-<p align="center">Dibuat dengan ❤️ menggunakan Python & Pygame</p>
+<p align="center">Dibuat dengan ❤️ menggunakan Python, Pygame, dan Pycairo</p>
