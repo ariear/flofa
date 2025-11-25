@@ -46,7 +46,7 @@ def main():
     CY = MAP_HEIGHT // 2
 
     trees = [
-        Tree(CX - 800, CY - 500, "beringin", "Pohon Beringin", "Beringin adalah pohon besar yang tumbuh di daerah tropis. Pohon ini memiliki ciri khas berupa akar gantung yang banyak dan menjuntai seperti rambut. Beringin berasal dan banyak ditemukan di wilayah Asia Tenggara, termasuk Indonesia."),
+        Tree(CX - 800, CY - 500, "Beringin", "Pohon Beringin", "Beringin adalah pohon besar yang tumbuh di daerah tropis. Pohon ini memiliki ciri khas berupa akar gantung yang banyak dan menjuntai seperti rambut. Beringin berasal dan banyak ditemukan di wilayah Asia Tenggara, termasuk Indonesia."),
         Tree(CX + 800, CY - 500, "oak", "Pohon Oak", "Pohon Oak merupakan pohon besar yang terkenal kokoh dan dapat hidup sangat lama. Ciri khasnya adalah batang tebal serta daun bercuping yang lebar. Pohon ini berasal dari wilayah beriklim sedang seperti Amerika Utara dan Eropa."),
         Tree(CX - 800, CY + 500, "maple", "Pohon Maple", "Pohon Maple adalah pohon berdaun lebar yang menghasilkan getah manis yang biasa diolah menjadi sirup maple. Ciri utamanya adalah bentuk daun bercabang yang bisa berubah warna saat musim gugur. Maple berasal dari Kanada dan negara beriklim dingin lainnya di Amerika Utara."),
         Tree(CX + 800, CY + 500, "pine", "Pohon Cemara", "Pohon Cemara (Pine) adalah pohon berdaun jarum yang tetap hijau sepanjang tahun. Ciri-cirinya meliputi bentuk pohon yang meruncing ke atas dan daun berbentuk jarum tipis. Pohon ini berasal dari daerah pegunungan serta wilayah beriklim sedang."),
